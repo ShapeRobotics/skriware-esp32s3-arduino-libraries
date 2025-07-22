@@ -37,7 +37,7 @@ Skribot::Skribot(String predef){
   rightSmartRotor = NULL;
   smartRotor = NULL;
   predefined_hrdw_config = " ";
-  TopId  = 0;
+  TopId  = 3;
   for(byte tt = 0; tt < MAX_HARDWARE; tt++){
     if(tt < MAX_LED_MATRIX)   LED_Matrixes[tt]  =NULL;
     if(tt < MAX_LEFT_ROTORS)  LeftDCRotors[tt]  =NULL;

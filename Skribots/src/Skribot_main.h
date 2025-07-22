@@ -8,7 +8,7 @@
 //#define FORCE_BOARD_VERSION_1
 //#define FORCE_BOARD_VERSION_2
 //#define FORCE_BOARD_VERSION_3
-//#define FORCE_BOARD_VERSION_4
+#define FORCE_BOARD_VERSION_4
 
 //#include "Arduino.h"
 #ifndef _VARIANT_BBC_MICROBIT_
