@@ -6,10 +6,10 @@
   #ifdef ESP_H
     SPIHandler::SPIHandler(byte MOSI_PIN,byte MISO,byte CLK_PIN,byte _CS_PIN){
       if(used_spi_bus == 0){
-      _spi = new SPIClass(2);//HSPI
+      _spi = new SPIClass(1);//HSPI
       used_spi_bus++;
       }else if(used_spi_bus == 1){
-      _spi = new SPIClass(3); //VSPI
+      _spi = new SPIClass(2); //VSPI
       used_spi_bus++;	
       }else{
         #ifdef DEBUG_MODE
@@ -25,10 +25,10 @@
 
     SPIHandler::SPIHandler(byte _SPI_PORT){
     if(used_spi_bus == 0){
-          _spi = new SPIClass(2);
+          _spi = new SPIClass(3);
           used_spi_bus++;
         }else if(used_spi_bus == 1){
-          _spi = new SPIClass(3);
+          _spi = new SPIClass(2);
           used_spi_bus++;	
         }else{
           #ifdef DEBUG_MODE
@@ -48,7 +48,7 @@
         SPI_PORT = 2;
       }  	
       pinMode(CS_PIN,OUTPUT);
-        digitalWrite(CS_PIN,HIGH);
+      digitalWrite(CS_PIN,HIGH);
     }
   #else
     SPIHandler::SPIHandler(byte _CS_PIN){

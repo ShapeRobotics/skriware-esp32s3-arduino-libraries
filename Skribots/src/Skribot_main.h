@@ -27,6 +27,8 @@
 #include "./utilities/Abstract_Device.h"
 #include "./utilities/Gyroscope.h"
 #include "./dht11/dht11.h"
+#include "./utilities/LIS3DHTR.h"
+#include "./utilities/LIS2MDL.h"
 #endif
 
 #ifdef _VARIANT_BBC_MICROBIT_
@@ -156,19 +158,6 @@
 #define EEPROM_LINE_DATA_START 17
 
 
-
-#ifdef _VARIANT_BBC_MICROBIT_
-#define SKRIBOT_MINI_SHILELD_MOTOR_1_DIR1_PIN 13 
-#define SKRIBOT_MINI_SHILELD_MOTOR_1_DIR2_PIN 14
-#define SKRIBOT_MINI_SHILELD_MOTOR_2_DIR1_PIN 15
-#define SKRIBOT_MINI_SHILELD_MOTOR_2_DIR2_PIN 16
-#define SKRIBOT_MINI_SHILELD_SENSOR_0 0
-#define SKRIBOT_MINI_SHILELD_SENSOR_1 1
-#define SKRIBOT_MINI_SHILELD_SENSOR_2 2
-#define SKRIBOT_MINI_SHILELD_IR_IN 11
-#define SKRIBOT_MINI_SHILELD_IR_OUT 9
-#endif
-
 #define LEFT_side 0
 #define RIGHT_side 1
 
@@ -191,6 +180,19 @@
 #define MAX_ABS_DIV      16
 #define MAX_GYRO         2
 #define MAX_TEMP_SENSORS 16
+
+#define MOTHERBOARD_SPI_MOSI 14
+#define MOTHERBOARD_SPI_MISO 0
+#define MOTHERBOARD_SPI_CLK  13
+#define MOTHERBOARD_SPI_CS   12
+
+#define MOTHERBOARD_I2C_SDA 35
+#define MOTHERBOARD_I2C_CLK 36
+
+#define MOTHERBOARD_BUTTON_PIN 48
+#define MOTHERBOARD_BUTTON_PIN_2 47
+
+#define MOTHERBOARD_BUZZER_PIN 37
 
   class Skribot
  {
@@ -366,6 +368,14 @@
     byte getIndexOfDeviceWithPin(byte pin);
     byte getPinOfDeviceWithID(byte id);
     byte getIndexOfDeviceWithID(byte id);
+
+    // Accelerometer and Magnetometer
+    LIS2MDL *mag = nullptr;
+    LIS3DHTR<TwoWire> *acc = nullptr;
+    void mag_init(TwoWire &Wire);
+    int32_t mag_read(int8_t axis);
+    bool acc_init(TwoWire &Wire);
+    float acc_read(uint8_t axis);
 
     void DEBUG_PRINT(char* msg);
  // private:

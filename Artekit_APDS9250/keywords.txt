@@ -1,0 +1,76 @@
+#######################################
+# Syntax Coloring Map Artekit_APDS9250
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Artekit_APDS9250		KEYWORD1
+APDS9250Resolution		KEYWORD1
+APDS9250Rate			KEYWORD1
+APDS9250Gain			KEYWORD1
+APDSInterruptChannel	KEYWORD1
+APDSInterruptMode		KEYWORD1
+APDSVariationCount		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin					KEYWORD2
+enable					KEYWORD2
+disable					KEYWORD2
+reset					KEYWORD2
+setMode					KEYWORD2
+setResolution			KEYWORD2
+setMeasurementRate		KEYWORD2
+setGain					KEYWORD2
+getMode					KEYWORD2
+getResolution			KEYWORD2
+getMeasurementRate		KEYWORD2
+getGain					KEYWORD2
+getStatusRegister		KEYWORD2
+getRed					KEYWORD2
+getGreen				KEYWORD2
+getBlue					KEYWORD2
+getInfrared				KEYWORD2
+getAmbientLight			KEYWORD2
+getAll					KEYWORD2
+setInterruptThreshold	KEYWORD2
+enableInterrupt			KEYWORD2
+disableInterrupt		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+res20bit				LITERAL1
+res19bit				LITERAL1
+res18bit				LITERAL1
+res17bit				LITERAL1
+res16bit				LITERAL1
+res13bit				LITERAL1
+rate25ms				LITERAL1
+rate50ms				LITERAL1
+rate100ms				LITERAL1
+rate200ms				LITERAL1
+rate500ms				LITERAL1
+rate1000ms				LITERAL1
+rate2000ms				LITERAL1
+gain1					LITERAL1
+gain3					LITERAL1
+gain6					LITERAL1
+gain9					LITERAL1
+gain18					LITERAL1
+channelInfrared			LITERAL1
+channelGreen			LITERAL1
+channelALS				LITERAL1
+channelRed				LITERAL1
+channelBlue				LITERAL1
+modeThreshold			LITERAL1
+modeVariation			LITERAL1
+variation8samples		LITERAL1
+variation16samples		LITERAL1
+variation32samples		LITERAL1
+variation64samples		LITERAL1
+variation1024samples	LITERAL1

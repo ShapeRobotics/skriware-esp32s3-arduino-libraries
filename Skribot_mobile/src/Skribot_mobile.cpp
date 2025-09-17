@@ -131,8 +131,8 @@ void SendErrorMsg(char const *msg){
 }
 
 void skribot_setup() {
-  pinMode(6,OUTPUT);
-    _robot = new Skribot("RAW_SKRIBRAIN");
+  
+  _robot = new Skribot("RAW_SKRIBRAIN");
   _robot->BLE_Setup();
   Block::setRobot(_robot); 
   Block::setBlockHandler(&BH);
@@ -143,7 +143,7 @@ void skribot_setup() {
     //UserFunctions_Setup();
     ENTER_TO_IDLE();
     Block::robot->ClearHardware();
-    digitalWrite(6,LOW);
+    
 }
 
 void skribot_loop() {

@@ -4,7 +4,7 @@
 Buzzer::Buzzer(int pin,int id)
   : pin(pin),
     id(id),
-    volume(10),
+    volume(255),
     tempo(1.0),
     currentMelody(nullptr),
     currentDelays(nullptr),

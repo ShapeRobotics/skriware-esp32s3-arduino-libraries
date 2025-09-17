@@ -196,8 +196,7 @@ void Skribot::AddDCRotor(int SpeedPin,int DirectionPin, String Side){
     return(tmp);
   }
   void Skribot::AddBuzzer(byte BUZZER_PIN, byte id){
-    Buzzer *buzzer = new Buzzer(BUZZER_PIN,id);
-    Buzzers[NBuzzers] = buzzer;
+    Buzzers[id] = new Buzzer(BUZZER_PIN,id);
     NBuzzers++;
   }
 
@@ -234,138 +233,23 @@ void Skribot::AddDCRotor(int SpeedPin,int DirectionPin, String Side){
 
 
 void Skribot::Configure_Connections(String predef){
-    Check_Board_Version();
     predefined_hrdw_config = predef;
-    #ifndef ESP_H
-    if(predef == "EDU_SHIELD"){
-          AddDCRotor(EDU_ROTOR_SPEED_PIN_L,EDU_ROTOR_DIR_PIN_L,"Left");          //adding rotors for movement
-          AddDCRotor(EDU_ROTOR_SPEED_PIN_R,EDU_ROTOR_DIR_PIN_R,"Right");
-          Stop();
-          AddDistSensor(EDU_ECHO_PIN_1,EDU_TRIG_PIN_1,1);   //adding Distance Sensors  and naming them "Left and Right";
-          AddDistSensor(EDU_ECHO_PIN_2,EDU_TRIG_PIN_2,2);
-          #ifndef _VARIANT_BBC_MICROBIT_
-          AddClaw(EDU_CLAW_PIN1,EDU_CLAW_PIN2);
-          Claws[0]->SetPositions(BV_0_up,BV_0_down,BV_0_open,BV_0_close);
-          #if DISABLED(DEBUG_MODE)
-          AddLED(EDU_LED_DATA_PIN_1,1);
-          AddLED(EDU_LED_DATA_PIN,0);
-          #endif
-          #endif
-          AddLineSensor(EDU_LINE_SENSOR_1, 1);
-          AddLineSensor(EDU_LINE_SENSOR_2, 2);
-          AddLineSensor(EDU_LINE_SENSOR_3, 3);
-          status = new StatusLED(EDU_SHIELD_STATUS_LED_R_PIN,EDU_SHIELD_STATUS_LED_G_PIN,EDU_SHIELD_STATUS_LED_B_PIN,EDU_SHILED_POWER_READOUT_PIN);
-          stausLEDused = true;
-          BLE_Set_Module(HM_10);
-    }else if (predef == "SKRIBOT_MINI"){
-           #ifdef _VARIANT_BBC_MICROBIT_
-          AddDCRotor(SKRIBOT_MINI_SHILELD_MOTOR_1_DIR1_PIN,SKRIBOT_MINI_SHILELD_MOTOR_1_DIR2_PIN,"Left");
-          AddDCRotor(SKRIBOT_MINI_SHILELD_MOTOR_2_DIR1_PIN,SKRIBOT_MINI_SHILELD_MOTOR_2_DIR2_PIN,"Right");
-          AddLineSensor(SKRIBOT_MINI_SHILELD_SENSOR_0, 1);
-          AddLineSensor(SKRIBOT_MINI_SHILELD_SENSOR_1, 2);
-          AddLineSensor(SKRIBOT_MINI_SHILELD_SENSOR_2, 3);
-          #endif
-    }else if (predef == "EDU_SHIELD_NO_GRABBER"){
-          AddDCRotor(EDU_ROTOR_SPEED_PIN_L,EDU_ROTOR_DIR_PIN_L,"Left");          //adding rotors for movement
-          AddDCRotor(EDU_ROTOR_SPEED_PIN_R,EDU_ROTOR_DIR_PIN_R,"Right");
-          AddDistSensor(EDU_ECHO_PIN_1,EDU_TRIG_PIN_1,1);   //adding Distance Sensors  and naming them "Left and Right";
-          AddDistSensor(EDU_ECHO_PIN_2,EDU_TRIG_PIN_2,2);
-          #ifndef _VARIANT_BBC_MICROBIT_
-          #if DISABLED(DEBUG_MODE)
-          AddLED(EDU_LED_DATA_PIN_1,1);
-          AddLED(EDU_LED_DATA_PIN,0);
-          #endif
-          #endif
-          AddLineSensor(EDU_LINE_SENSOR_1, 1);
-          AddLineSensor(EDU_LINE_SENSOR_2, 2);
-          AddLineSensor(EDU_LINE_SENSOR_3, 3);
-          BLE_Set_Module(HM_10);
+    if(predef == "MOTHERBOARD"){
+      BLE_Set_Module(ESP32_BLE);
+      pinMode(MOTHERBOARD_BUZZER_PIN,OUTPUT);
+      pinMode(MOTHERBOARD_BUTTON_PIN,INPUT_PULLUP);
+      pinMode(MOTHERBOARD_BUTTON_PIN_2,INPUT_PULLUP);
+      Add_Mono_LED_matrix(MOTHERBOARD_SPI_MOSI,0,MOTHERBOARD_SPI_CLK,MOTHERBOARD_SPI_CS,0);
+      LED_Matrixes[0]->Init();
+      LED_Matrixes[0]->SetRotation(1);
+      LED_Matrixes[0]->SetIntensity(8);
+      LED_Matrixes[0]->ClearDisplay(0);
+      LED_Matrixes[0]->SetChar(0,'X');
+      LED_Matrixes[0]->Update();
+      Wire.begin(MOTHERBOARD_I2C_SDA,MOTHERBOARD_I2C_CLK);
+      acc_init(Wire);
+      mag_init(Wire);
     }
-    #else
-    if(predef == "SKRIBRAIN"){
-          AddDCRotor(SKRIBRAIN_MOTOR_L_DIR2_PIN,SKRIBRAIN_MOTOR_L_DIR1_PIN,"Left");
-          AddDCRotor(SKRIBRAIN_MOTOR_R_DIR2_PIN,SKRIBRAIN_MOTOR_R_DIR1_PIN,"Right");
-          AddLED(SKRIBRAIN_LED_PIN_2,1);
-          AddLED(SKRIBRAIN_LED_PIN_1,0);
-          AddDistSensor(SKRIBRAIN_ECHO_PIN_1,SKRIBRAIN_TRIG_PIN_1,1);   
-          AddDistSensor(SKRIBRAIN_ECHO_PIN_2,SKRIBRAIN_TRIG_PIN_2,2);
-          AddLineSensor(LINE_PIN_1, 1);
-          AddLineSensor(LINE_PIN_2, 2);
-          AddLineSensor(LINE_PIN_3, 3);
-          BLE_Set_Module(ESP32_BLE); 
-          switch (Board_type){
-          case 1:
-            AddClaw(SKRIBRAIN_SERVO_PIN_1,SKRIBRAIN_SERVO_PIN_2);
-            Claws[0]->SetPositions(BV_1_up,BV_1_down,BV_1_open,BV_1_close);
-            status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_SERVO_PIN_3,1);
-          break;
-          case 2:
-            AddClaw(SKRIBRAIN_SERVO_PIN_1,SKRIBRAIN_SERVO_PIN_3);
-            status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_SERVO_PIN_2,2);
-            Claws[0]->SetPositions(BV_1_up,BV_1_down,BV_1_open,BV_1_close);
-          break;
-          case 3:
-            AddClaw(SKRIBRAIN_SERVO_PIN_1,SKRIBRAIN_SERVO_PIN_3);
-            status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_MOTOR_L_ENC_PIN,3);
-            Claws[0]->SetPositions(BV_1_up,BV_1_down,BV_1_open,BV_1_close);
-          break;
-          default:
-          break;
-          }
-          stausLEDused = true;
-        }else if(predef == "SKRIBRAIN+LED_MATRIX"){ 
-          AddDCRotor(SKRIBRAIN_MOTOR_L_DIR2_PIN,SKRIBRAIN_MOTOR_L_DIR1_PIN,"Left");
-          AddDCRotor(SKRIBRAIN_MOTOR_R_DIR2_PIN,SKRIBRAIN_MOTOR_R_DIR1_PIN,"Right");
-          AddLED(SKRIBRAIN_LED_PIN_2,1);
-          AddDistSensor(SKRIBRAIN_ECHO_PIN_1,SKRIBRAIN_TRIG_PIN_1,1);   
-          AddDistSensor(SKRIBRAIN_ECHO_PIN_2,SKRIBRAIN_TRIG_PIN_2,2);
-          AddLineSensor(LINE_PIN_1, 1);
-          AddLineSensor(LINE_PIN_2, 2);
-          AddLineSensor(LINE_PIN_3, 3);
-          AddClaw(SKRIBRAIN_SERVO_PIN_1,SKRIBRAIN_SERVO_PIN_2);
-          BLE_Set_Module(ESP32_BLE); 
-          status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_SERVO_PIN_3,1);
-          stausLEDused = true;
-          Add_Mono_LED_matrix(SPI_PORT_2);
-        }else if(predef == "RAW_SKRIBRAIN"){
-        BLE_Set_Module(ESP32_BLE); 
-        Serial.println("Board type:");
-        Serial.println(Board_type);
-        // switch (Board_type){
-        //   case 1:
-        //     status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_SERVO_PIN_3,1);
-        //   break;
-        //   case 2:
-        //     status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_SERVO_PIN_2,2);
-        //   break;
-        //   case 3:
-        //     status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_MOTOR_L_ENC_PIN,3);
-        //   break;
-        //   case 4:
-        //     status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN, SKRIBRAIN_MOTOR_L_ENC_PIN, 4);
-        //    break;
-        //   default:
-        //   break;
-        //}
-        stausLEDused = true;
-      }else if(predef == "SKRIBRAIN_2"){
-          AddDCRotor(SKRIBRAIN_2_MOTOR_L_DIR2_PIN,SKRIBRAIN_2_MOTOR_L_DIR1_PIN,"Left");
-          AddDCRotor(SKRIBRAIN_2_MOTOR_R_DIR2_PIN,SKRIBRAIN_2_MOTOR_R_DIR1_PIN,"Right");
-          AddLED(SKRIBRAIN_2_LED_PIN_2,1);
-          AddLED(SKRIBRAIN_2_LED_PIN_1,0);
-          AddDistSensor(SKRIBRAIN_2_ECHO_PIN_1,SKRIBRAIN_2_TRIG_PIN_1,1);   
-          AddDistSensor(SKRIBRAIN_2_ECHO_PIN_2,SKRIBRAIN_2_TRIG_PIN_2,2);
-          AddLineSensor(SKRIBRAIN_2_ANALOG_PIN_1, 1);
-          AddLineSensor(SKRIBRAIN_2_ANALOG_PIN_2, 2);
-          AddLineSensor(SKRIBRAIN_2_ANALOG_PIN_3, 3);
-          AddClaw(SKRIBRAIN_2_SERVO_PIN_1,SKRIBRAIN_2_SERVO_PIN_2);
-          BLE_Set_Module(ESP32_BLE); 
-          status = new StatusLED(SKRIBRAIN_STATUS_LED_PIN,SKRIBRAIN_MOTOR_L_ENC_PIN,3);
-          stausLEDused = true;
-      }
-    #endif
-   SetSpeed(100);
-   Stop();
   }
 
   bool Skribot::AddGyroscope(byte _SDA_PIN, byte _CLK_PIN,byte id){
@@ -394,3 +278,49 @@ void Skribot::Configure_Connections(String predef){
       }
       return(NABSDevices);
   }
+
+  bool Skribot::acc_init(TwoWire &Wire){
+ 
+  acc = new LIS3DHTR<TwoWire>();
+  acc->begin(Wire,0x19);
+  if(!acc)
+  {
+    Serial.println("Could not start lis3dh");
+   return(false);
+      ;
+  }
+  acc->setHighSolution(true);
+  acc->setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
+  return(true);
+}
+
+void Skribot::mag_init(TwoWire &Wire){
+  mag = new LIS2MDL(&Wire);
+  if(mag->begin() == LIS2MDL_OK)
+    Serial.println("Magneto OK");
+  else
+    Serial.println("Magneto ERROR");	
+  mag->Enable();
+}
+
+int32_t Skribot::mag_read(int8_t axis){
+    int32_t magnetometer[3];
+    mag->GetAxes(magnetometer);
+    return(magnetometer[axis]);
+}
+
+float Skribot::acc_read(uint8_t axis){
+   
+      float x,y,z;
+      acc->getAcceleration(&x,&y,&z);
+      switch(axis){
+        case 0:
+          return(x);
+        case 1:
+          return(y);
+        case 2:
+          return(z);
+      }
+    
+    return(0);
+}
