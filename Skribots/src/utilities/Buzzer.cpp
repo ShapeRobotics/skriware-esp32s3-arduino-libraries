@@ -4,7 +4,7 @@
 Buzzer::Buzzer(int pin,int id)
   : pin(pin),
     id(id),
-    volume(255),
+    volume(100),
     tempo(1.0),
     currentMelody(nullptr),
     currentDelays(nullptr),
@@ -26,8 +26,8 @@ Buzzer::~Buzzer(void)
 void Buzzer::PlayNote(uint16_t frequency, int duration, bool blocking)
 {
     #ifdef ESP_H
-      ledcWrite(channel, volume);
-      ledcWriteTone(channel, frequency);
+      ledcWrite(pin, volume);
+      ledcWriteTone(pin, frequency);
     #else
       TimerFreeTone(pin, frequency, duration, volume);
     #endif
@@ -36,7 +36,7 @@ void Buzzer::PlayNote(uint16_t frequency, int duration, bool blocking)
     if (blocking)
     {
       delay(duration);
-        ledcWriteTone(channel, 0);
+        ledcWriteTone(pin, 0);
     }
     #endif
 }

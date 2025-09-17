@@ -236,7 +236,7 @@ void Skribot::Configure_Connections(String predef){
     predefined_hrdw_config = predef;
     if(predef == "MOTHERBOARD"){
       BLE_Set_Module(ESP32_BLE);
-      pinMode(MOTHERBOARD_BUZZER_PIN,OUTPUT);
+      AddBuzzer(MOTHERBOARD_BUZZER_PIN,0);
       pinMode(MOTHERBOARD_BUTTON_PIN,INPUT_PULLUP);
       pinMode(MOTHERBOARD_BUTTON_PIN_2,INPUT_PULLUP);
       Add_Mono_LED_matrix(MOTHERBOARD_SPI_MOSI,0,MOTHERBOARD_SPI_CLK,MOTHERBOARD_SPI_CS,0);
