@@ -10,7 +10,7 @@
       for(byte ii = 0; ii < MAX_PWM_CHANNELS;ii++){
         if(PWM_Channels[ii].pwmPin == _PWMPin){
         #ifdef ESP_H
-          ledcWrite(PWM_Channels[ii].pwmChannel, value);
+          ledcWrite(PWM_Channels[ii].pwmPin, value);
           PWM_Channels[ii].value = value;
         #else 
           analogWrite(PWM_Channels[ii].pwmPin,value);

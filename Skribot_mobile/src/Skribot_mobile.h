@@ -13,7 +13,6 @@
 #include "utilities/AritmeticBlock.h"
 #include "utilities/InterruptHandler.h"
 
-extern Skribot *_robot;
 void skribot_setup();
 void skribot_loop();
 byte Board_Version();

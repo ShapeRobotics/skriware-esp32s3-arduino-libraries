@@ -55,7 +55,7 @@ byte Skribot::getPinN_for_hardware(char id){
 
 bool Skribot::AddHardware(byte *tag){
   bool tmp = true;
-  if(predefined_hrdw_config != "RAW_SKRIBRAIN") return(true); //ignoring BLE configuration when there is a user specified one
+  if(predefined_hrdw_config != "RAW_SKRIBRAIN"  && predefined_hrdw_config != "MOTHERBOARD") return(true); //ignoring BLE configuration when there is a user specified one
   switch(tag[0]){
     case CASE_MATRIX:
       DEBUG_PRINT("MATRIX");
