@@ -131,8 +131,7 @@ void SendErrorMsg(char const *msg){
 }
 
 void skribot_setup() {
-  
-  _robot = new Skribot("RAW_SKRIBRAIN");
+  _robot = new Skribot("MOTHERBOARD");
   _robot->BLE_Setup();
   Block::setRobot(_robot); 
   Block::setBlockHandler(&BH);
