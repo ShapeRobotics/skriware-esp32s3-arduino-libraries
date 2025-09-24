@@ -119,7 +119,7 @@ class LIS2MDL
     uint8_t IO_Read(uint8_t* pBuffer, uint8_t RegisterAddr, uint16_t NumByteToRead)
     {        
       if (dev_spi) {
-        dev_spi->beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE3));
+        dev_spi->beginTransaction(SPISettings(spi_speed, SPI_MSBFIRST, SPI_MODE3));
 
         digitalWrite(cs_pin, LOW);
 
@@ -166,7 +166,7 @@ class LIS2MDL
     uint8_t IO_Write(uint8_t* pBuffer, uint8_t RegisterAddr, uint16_t NumByteToWrite)
     {  
       if (dev_spi) {
-        dev_spi->beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE3));
+        dev_spi->beginTransaction(SPISettings(spi_speed, SPI_MSBFIRST, SPI_MODE3));
 
         digitalWrite(cs_pin, LOW);
 

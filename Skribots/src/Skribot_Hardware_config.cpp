@@ -240,17 +240,18 @@ void Skribot::Configure_Connections(String predef){
       AddBuzzer(37,0);
       pinMode(MOTHERBOARD_BUTTON_PIN,INPUT_PULLUP);
       pinMode(MOTHERBOARD_BUTTON_PIN_2,INPUT_PULLUP);
-      // Add_Mono_LED_matrix(MOTHERBOARD_SPI_MOSI,0,MOTHERBOARD_SPI_CLK,MOTHERBOARD_SPI_CS,0);
-      // LED_Matrixes[0]->Init();
-      // LED_Matrixes[0]->SetRotation(1);
-      // LED_Matrixes[0]->SetIntensity(8);
-      // LED_Matrixes[0]->ClearDisplay(0);
-      // LED_Matrixes[0]->SetChar(0,'X');
-      // LED_Matrixes[0]->Update();
+      Add_Mono_LED_matrix(MOTHERBOARD_SPI_MOSI,0,MOTHERBOARD_SPI_CLK,MOTHERBOARD_SPI_CS,0);
+      LED_Matrixes[0]->Init();
+      LED_Matrixes[0]->SetRotation(1);
+      LED_Matrixes[0]->SetIntensity(8);
+      LED_Matrixes[0]->ClearDisplay(0);
+      LED_Matrixes[0]->SetChar(0,'X');
+      LED_Matrixes[0]->Update();
       Wire.begin(MOTHERBOARD_I2C_SDA,MOTHERBOARD_I2C_CLK);
       acc_init(Wire);
       mag_init(Wire);
       stausLEDused = false;
+      
     }
     SetSpeed(100);
     Stop();

@@ -6,10 +6,10 @@
   #ifdef ESP_H
     SPIHandler::SPIHandler(byte MOSI_PIN,byte MISO,byte CLK_PIN,byte _CS_PIN){
       if(used_spi_bus == 0){
-      _spi = new SPIClass(1);//HSPI
+      _spi = new SPIClass();//HSPI
       used_spi_bus++;
       }else if(used_spi_bus == 1){
-      _spi = new SPIClass(2); //VSPI
+      _spi = new SPIClass(); //VSPI
       used_spi_bus++;	
       }else{
         #ifdef DEBUG_MODE

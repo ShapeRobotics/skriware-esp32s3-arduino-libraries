@@ -248,7 +248,7 @@ bool BLEModule::BLE_checkConnection(){
   		  BLEDevice::init("Skribot");
   		  mac = BLEDevice::getAddress().toString();
   		  for(byte rr = 0; rr< mac.length(); rr++)Serial.print(mac[rr]);
-  		  sprintf(robot_name_tmp,"Skribrain_%c%c%c",mac[mac.length()-1],mac[mac.length()-2],mac[mac.length()-4]);
+  		  sprintf(robot_name_tmp,"BidaBIT_%c%c%c",mac[mac.length()-1],mac[mac.length()-2],mac[mac.length()-4]);
   		  Serial.println(robot_name_tmp);
   		  for(byte hh = EEPROM_NAME_BEG; hh<EEPROM_NAME_END+1;hh++){
   		  	EEPROM.write(hh,(byte)robot_name_tmp[hh-EEPROM_NAME_BEG]);

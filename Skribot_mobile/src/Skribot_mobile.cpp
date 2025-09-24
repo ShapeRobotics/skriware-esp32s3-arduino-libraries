@@ -57,12 +57,16 @@ void idle_connectioncheck(){
       _robot->Stop();
       BT_state = !BT_state;
       Serial.println("DISCONNECTED");
+      _robot->LED_Matrixes[0]->SetChar(0,'X');
+      _robot->LED_Matrixes[0]->Update();
       ENTER_TO_IDLE();
       _robot->BLE_reset();
      }
   }else if(_robot->BLE_checkConnection() && !BT_state){ 
      BT_state = !BT_state;
       Serial.println("CONNECTED");
+      _robot->LED_Matrixes[0]->SetChar(0,'^');
+      _robot->LED_Matrixes[0]->Update();
      BH.clear();
   }
   if(_robot->BTmodule->OTAupdate){
@@ -131,6 +135,7 @@ void SendErrorMsg(char const *msg){
 }
 
 void skribot_setup() {
+  Serial.begin(115200);
   _robot = new Skribot("MOTHERBOARD");
   _robot->BLE_Setup();
   Block::setRobot(_robot); 
